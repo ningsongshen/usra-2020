@@ -11,6 +11,7 @@ numpy = "*"
 jupyter = "*"
 sympy = "*"
 numdifftools = "*"
+scipy = "*"
 
 [requires]
 python_version = "3.8"
