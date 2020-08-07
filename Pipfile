@@ -10,6 +10,7 @@ matplotlib = "*"
 numpy = "*"
 jupyter = "*"
 sympy = "*"
+numdifftools = "*"
 
 [requires]
 python_version = "3.8"
