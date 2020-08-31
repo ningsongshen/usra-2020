@@ -1,0 +1,880 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage{amsmath,amsthm}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{subcaption}
+\usepackage[right,pagewise,displaymath, mathlines]{lineno}
+\usepackage{epstopdf}
+\usepackage{color}
+\usepackage{multirow}
+
+\usepackage{natbib}
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+% THEOREMS -------------------------------------------------------
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{statement}{Statement}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{property}{Property}[section]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\theoremstyle{remark}
+\newtheorem{note}{Note}[section]
+\newtheorem{remark}{Remark}[section]
+\numberwithin{equation}{section}
+% ----------------------------------------------------------------
+
+\usepackage{geometry}
+\geometry{tmargin=1.25in,bmargin=1.25in,lmargin=1.25in,rmargin=1.25in}
+
+\renewcommand{\baselinestretch}{1.25}
+
+
+
+\begin{document}
+
+
+\begin{center}
+
+
+{\Large\bf Risks, Classification, and Pattern Recognition\footnote{This research has been supervised by \href{http://fisher.stats.uwo.ca/faculty/zitikis/main.htm}{Ri\v cardas Zitikis} and supported by the Natural Sciences and Engineering Research Council Undergraduate Student Research Award (NSERC USRA).}}
+
+
+\vspace*{7mm}
+
+{\large Ningsong Shen}
+
+\medskip
+
+\textit{Western University, London, Ontario N6A 5B7, Canada}
+
+\bigskip
+
+\today
+
+\end{center}
+
+
+
+\begin{quote}
+\textbf{Abstract.} A working file
+
+
+\textit{Keywords and phrases:} Hessian, matrices, eigenvalues...
+
+
+\end{quote}
+
+
+
+\section{Introduction}
+\label{introduction}
+
+Convexity plays an important role in many areas of research and practice. For example, consider an application of convexity with the automated harvesting of apples \citep{KL2014}. The use of convexity there to detect apples does not suffer adverse effects from poor lighting or varying colours. However, a different challenge is posed, as apples are not perfectly convex. Another area of use is in financial mathematics, where convexity is often used to measure risk. A simple example would be looking at bond risk with curves. In fact, there are many objects in the world and many applications where the data is not perfectly convex but where it would be useful in knowing the degree to which it is not. The following text will examine a method to quantify the convexity of a function or object from \cite{DMZ2019} and apply it to different fields. The beginning sections will look at the indices of (non)convexity for a matrix. The middle sections will examine the application of the method on convex and non-convex objects. Finally, the conclusion will discuss the different future applications and potential avenues that this new method will open up.
+
+
+
+\section{Finding the Eigenvalues of a Matrix}
+\label{eigenvalues}
+
+\begin{definition}
+	$\lambda $ is called an eigenvalue of square matrix $A$ if there is a nonzero vector $x$ such that $Ax = \lambda x$.
+\end{definition}
+
+This can be rewritten as $(A - \lambda I)x = 0$ which helps find the eigenvalues for a given vector $x$. We recall a property of singular matrices, which have a determinant of 0. Therefore, $\lambda$ is an eigenvalue of $A$ if and only if $A - \lambda I$ is singular, in other words, if $\det(A - \lambda I) = 0$.
+
+\begin{definition}
+	The determinant of a 2 x 2 matrix with entries $x_{ij}$ for $i, j = 1,2$ is $x_{11}x_{22} - x_{12}x_{21}$
+\end{definition}
+
+We can use the definition of a determinant to calculate the determinant for $A - \lambda I$ in the $2 \times 2$ case with
+\[
+(x_{11} - \lambda)(x_{22} - \lambda) - x_{12}x_{21} = 0,
+\]
+which can be rearranged as follows
+
+\[
+\lambda^2 - (x_{11} + x_{22})\lambda + x_{11}x_{22} - x_{12}x_{21} = 0.
+\]
+
+This is of the form $ax^2+bx+c=0$ which can be easily solved with the quadratic formula, and hence we present the following theorem.
+
+\begin{theorem}
+	\label{theorem:2x2eigenvalues}
+	The eigenvalues of a $2 \times 2$ matrix with entries $x_{ij}$ for $i, j = 1,2$ can be denoted as follows using the entries of the matrix:
+	\[
+	\lambda = \frac{(x_{11} + x_{22}) \pm \sqrt{(x_{11} + x_{22})^2 - 4(x_{11}x_{22} - x_{12}x_{21})}}{2}
+	\]
+\end{theorem}
+
+
+
+\section{Convexity in the $2 \times 2$ Case}
+\label{case}
+
+To illustrate, we select the differentiable function $f(x, y) = \sin(xy)$ plotted in Figure \ref{fig:sinxy}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[height=5cm]{sinxy}
+	\caption{Function $f(x,y)=\sin(xy)$}
+	\label{fig:sinxy}
+\end{figure}
+
+The $2 \times 2$ Hessian of $f(x, y) = \sin(xy)$ was computed and its positive and negative eigenvalues were plotted in Figure \ref{fig:eigenvalues}. This is enough information to plot the normalized index of lack of convexity (Figure \ref{fig:nloc}) and index of convexity (Figure \ref{fig:conv}).
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{lambda1}
+		\caption{Positive}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{lambda2}
+		\caption{Negative}
+	\end{subfigure}
+	\caption{Eigenvalues of the $2 \times 2$ Hessian, $\lambda_{1}$ and $		\lambda_{2}$}
+	\label{fig:eigenvalues}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[height=5cm]{loc}
+	\caption{The normalized index of lack of convexity $\mathrm{NLOC}(f,\mathbf{x}) = \frac{\sum_{i=1}^{d} \lambda_{i}^{-} (\mathbf{x})}{\sum_{i=1}^{d} |\lambda_{i} (\mathbf{x}) |} $}
+	\label{fig:nloc}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[height=5cm]{conv}
+	\caption{The index of convexity $\mathrm{CONV}(f,\mathbf{x}) = \frac{\sum_{i=1}^{d} \lambda_{i}^{+} (\mathbf{x})}{\sum_{i=1}^{d} |\lambda_{i} (\mathbf{x}) |}$}
+	\label{fig:conv}
+\end{figure}
+
+Other functions were also plotted. Of note are the functions that would not graph properly, likely due to entries of the Hessian being 0. This would cause issues when graphing and calculating the functions of 2 variables. Another plotting solution may be required, but sticking to functions with non-disappearing partial derivatives (e.g. $e^{xy}$)  will work well.
+
+
+\section{The Hessian, its Eigenvalues, and Convexity}
+\label{hessian}
+
+\begin{definition}
+	For a square $n \times n$ matrix, there will be a maximum of $n$ eigenvalues.
+\end{definition}
+
+Therefore, for a $2 \times 2$ Hessian matrix, there will never be more than 2 eigenvalues. We define a few more terms for the upcoming discussion on the significance of the Hessian matrix.
+
+\begin{definition}
+	A convex function is a function between two points $a$ and $b$ which are joined by a line segment that will fall on or above the function. Note that a linear function is considered convex.
+\end{definition}
+
+\begin{definition}
+	A strictly convex function is a convex function which has one local minimum.
+\end{definition}
+
+\begin{definition}
+	$a$ is a positive number if $a \geq 0$ while $a$ is a negative number if $a \leq 0$.
+\end{definition}
+
+\begin{definition}
+	$b$ is a strictly positive number if $b > 0$ while $b$ is a strictly negative number if $b < 0$. Note the exclusion of 0 in both cases.
+\end{definition}
+
+The Hessian matrix is a matrix of second partial derivatives. Usually, mixed partial derivatives are equivalent. Thus, the Hessian matrix be regarded as symmetric, and such matrices always have real eigenvalues. This can be proved by rewriting $x_{12} = x_{21}$ and using the discriminant from Theorem \ref{theorem:2x2eigenvalues}.
+
+\begin{align*}
+	\Delta
+	&= (x_{11} + x_{22})^2 - 4(x_{11}x_{22} - x_{12}^2)
+	\\
+	&= x_{11}^2 + 2x_{11}x_{22} + x_{22}^2 - 4x_{11}x_{22} + 4x_{12}^2
+	\\
+	&= (x_{11} - x_{22})^2 + 4x_{12}^2
+\end{align*}
+
+All the terms are positive, hence the discriminant is positive, and the eigenvalues must be real. If the discriminant is strictly positive, there will be two distinct eigenvalues, otherwise, there will only be one eigenvalue with algebraic multiplicity 2. Figure \ref{fig:singleeigenvalue} plots locations of only one eigenvalue for $f(x, y) = \sin(xy)$.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[height=5cm]{equivalent}
+	\caption{Locations where there only one eigenvalue exists}
+	\label{fig:singleeigenvalue}
+\end{figure}
+
+For a single-variable function, the second derivative indicates curvature. Regions where the second derivative are strictly positive indicate strict convexity. In the $2 \times 2$ case, the Hessian matrix is used as the equivalent of the second derivative representing curvature and convexity. The ideas of being strictly positive need to be extended to matrices.
+
+\begin{definition}
+	A symmetric $n \times n$ matrix $A$ is positive-definite if $z^{T}Az$ is strictly positive for every non-zero column vector $z$. The same matrix is positive semi-definite if $z^{T}Az$ is positive for every non-zero column vector $z$.
+\end{definition}
+
+Regions of a multivariable function where the Hessian matrix is positive-definite must then be strictly convex, while regions where the Hessian matrix is positive semi-definite must be convex. Other regions will have a lack of convexity. 
+
+
+
+\section{Canonical Decomposition}
+\label{canonicaldecomposition}
+
+\begin{example}
+
+Here we will look at the decomposition of a matrix. We start with the following symmetric  $2 \times 2$ matrix:
+\[
+H = \begin{bmatrix}
+1 & \sqrt{3}  \\
+\sqrt{3} & -1
+\end{bmatrix}.
+\]
+This matrix will be diagonalized orthogonally. Using Theorem \ref{theorem:2x2eigenvalues}, we can deduce that the eigenvalues are $\pm 2$ and that the respective eigenvectors are 
+
+\[
+\begin{bmatrix}
+\sqrt{3} \\
+1
+\end{bmatrix}
+%
+,
+\begin{bmatrix}
+- \frac{1}{\sqrt{3}}  \\
+1
+\end{bmatrix}
+\]
+
+These vectors are orthogonal to each other, but when put together as columns of a matrix, they do not form an orthogonal matrix because they are not normalized. Using the Gram-Schmidt process, we obtain a normalized matrix:
+\[
+Q = \begin{bmatrix}
+\frac{\sqrt{3}}{2}  & - \frac{1}{2} \\
+\frac{1}{2} & \frac{\sqrt{3}}{2}
+\end{bmatrix}
+\]
+This matrix is orthogonal and its inverse is equal to its transpose.
+
+Now we look at the diagonal matrix of eigenvalues 
+\[
+\Lambda = \begin{bmatrix}
+2 & 0  \\
+0 & -2
+\end{bmatrix}, 
+\]
+which means that 
+\[
+\Lambda^{+} = \begin{bmatrix}
+2 & 0  \\
+0 & 0
+\end{bmatrix},
+\]
+and 
+\[
+\Lambda^{-} = \begin{bmatrix}
+0 & 0  \\
+0 & -2
+\end{bmatrix}.
+\]
+Using these matrices, we can calculate $H^{+}$ and $H^{-}$.
+
+\begin{align*}
+	H^{+}
+	&= Q \Lambda^{+} Q^{T} = \begin{bmatrix}
+										\frac{3}{2} & \frac{\sqrt{3}}{2}  \\
+										\frac{\sqrt{3}}{2} & \frac{1}{2}
+										\end{bmatrix}
+	\\
+	H^{-}
+	&= Q \Lambda^{-} Q^{T} = \begin{bmatrix}
+										\frac{1}{2} & - \frac{\sqrt{3}}{2}  \\
+										- \frac{\sqrt{3}}{2} & \frac{3}{2}
+										\end{bmatrix}
+\end{align*}
+
+From earlier, we can obtain that $H = Q\Lambda Q^{T}$ is true. Similarly, $H^{+} = Q \Lambda^{+} Q^{T}$ holds,  $H^{-} = Q \Lambda^{+} Q^{T} $ too, and so
+\[
+H = H^{+} - H^{-}= \begin{bmatrix}
+							1 & \sqrt{3}  \\
+							\sqrt{3} & -1
+							\end{bmatrix}.
+\]
+
+The nuclear norm of $H$ is 
+\[
+\left\Vert H \right\Vert_{*} = \sum_{i=1}^{d} |\lambda_{i}| = 4, 
+\]
+similarly $\left\Vert H^{+} \right\Vert_{*} = 2$, $\left\Vert H^{-} \right\Vert_{*} = 2$, and so $\left\Vert H \right\Vert_{*} = \left\Vert H^{+} \right\Vert_{*} + \left\Vert H^{-} \right\Vert_{*}$ holds.
+
+\end{example}
+
+
+
+\section{Half a Unit Ball}
+\label{houb}
+
+As a preamble to the main application of the indices to apples and lemons, we will investigate the case of convexity for a simpler object: the 2-D unit ball.
+
+The upper half of a unit ball centered at $(0, 0)$ was drawn on blank paper. Definition from Wikipedia. Proof modified from note.
+\begin{definition}
+	Let S be a vector space or an affine space over the real numbers, or more generally, over some ordered field. This includes Euclidean spaces, which are affine spaces. A subset $C$ of $S$ is convex if, for all $x$ and $y$ in $C$, the line segment connecting $x$ and $y$ is included in $C$. This means that the affine combination $(1-t)x + ty$ belongs to $C$, for all $x$ and $y$ in C, and $t$ in the interval $[0, 1]$.
+\end{definition}
+
+Let $C = {(x, y) \in R^{2}: x^{2} + y^{2} \leq 1, y \geq 0}$ be the upper half of the unit ball. The set $C$ is convex if for all $a, b \in C$, the points $ta + (1 - t)b \in C$ for all $t \in [0, 1]$. Since $a, b \in C$, we have
+\[
+a_{1}^{2} + a_{2}^{2} \leq 1, a_{2} \geq 0
+\]
+\[
+ta_{1}^{2} + ta_{2}^{2} \leq t, a_{2} \geq 0,
+\]
+\[
+b_{1}^{2} + b_{2}^{2} \leq 1, b_{2} \geq 0,
+\]
+\[
+(1 - t)b_{1}^{2} + (1 - t)b_{2}^{2} \leq (1 - t), b_{2} \geq 0.
+\]
+Adding the equations together,
+\[
+ta_{1}^{2} + (1 - t)b_{1}^{2} + ta_{2}^{2} + (1 - t)b_{2}^{2} \leq t + (1 - t), a_{2} \geq 0, b_{2} \geq 0,
+\]
+we use the fact that $f(x) = x^{2}$ is convex:
+\[
+(ta_{1} + (1 - t)b_{1})^{2} + (ta_{2} +  (1 - t)b_{2})^{2} \leq 1, a_{2} \geq 0, b_{2} \geq 0
+\]
+proving that the upper half of a unit ball is convex.
+
+We also show that the boundary of the upper half of a unit ball is concave using the definition of concavity.
+\begin{definition}
+	A real-valued function $f$ on an interval (or more generally, a convex set in vector space) is said to be concave if, for any $x$ and $y$ in the interval and any $t \in [0, 1]$, $f((1-t)x + ty) \geq (1 - t)f(x) + tf(y)$.
+\end{definition}
+
+Let $f(x) = \sqrt{1- x^{2}}$ be the equation for the boundary of the upper half of the unit ball. $f$ is concave if 
+\[
+\sqrt{1 - ((1 - t)x + ty)^{2}} \geq (1- t)\sqrt{1 - x^{2}} + t\sqrt{1 - y^{2}}
+\]
+and since both sides are positive,
+\begin{align*}
+1 - ((1 - t)x + ty)^{2}
+&\geq (1- t)^{2}(1 - x^{2}) + 2t(1 - t)\sqrt{(1 - x^{2})(1 - y^{2})} + t^{2}(1 - y^{2})
+\\
+1 - (1 - t)^{2}x^{2} - 2t(1 - t)xy - t^{2}y^{2}
+&\geq (1 - t)^{2} - (1 - t)^{2}x^{2} + 2t(1 - t)\sqrt{(1 - x^{2})(1 - y^{2})} + t^{2} - t^{2}y^{2}
+\\
+1 - 2t(1 - t)xy
+&\geq (1 - t)^{2} + 2t(1 - t)\sqrt{(1 - x^{2})(1 - y^{2})} + t^{2}
+\\
+1
+&\geq 1 - 2t + 2t^{2} + 2t(1 - t)\sqrt{(1 - x^{2})(1 - y^{2})} + 2t(1 - t)xy
+\\
+0
+&\geq - 2t + 2t^{2} + 2t(1 - t)(\sqrt{(1 - x^{2})(1 - y^{2})} + xy)
+\\
+0
+&\geq -1 + t + (1 - t)(\sqrt{(1 - x^{2})(1 - y^{2})} + xy)
+\\
+0
+&\geq (t-1)(1 - \sqrt{(1 - x^{2})(1 - y^{2})} + xy)
+\end{align*}
+which is true because $(t - 1)$ is always negative and $(1 - \sqrt{(1 - x^{2})(1 - y^{2})} + xy)$ is always positive. This proves that $f$ is concave.
+
+
+
+\section{Half a 3D Unit Ball}
+\label{ho3dub}
+
+We will also look at the 3-D unit ball, which is an even closer relative to the apple or lemon. This was particularly helpful in reasoning through the apple and lemon proofs.
+
+The upper half of a unit ball centered at $(0, 0, 0)$ was drawn on blank paper. The convexity of this ball will be proved in a similar manner to the above. It is of note (in both cases) that the set itself is convex, however the surface containing the set is concave.
+
+Let $C = {(x, y, z) \in R^{2}: x^{2} + y^{2} + z^{2} \leq 1, z \geq 0}$ be the upper half of the 3D unit ball. The set $C$ is convex if for all $a, b \in C$, the points $ta + (1 - t)b \in C$ for all $t \in [0, 1]$. Since $a, b \in C$, we have
+\[
+a_{1}^{2} + a_{2}^{2} + a_{3}^{2} \leq 1, a_{3} \geq 0
+\]
+\[
+ta_{1}^{2} + ta_{2}^{2} + ta_{3}^{2} \leq t, a_{3} \geq 0,
+\]
+\[
+b_{1}^{2} + b_{2}^{2} + b_{3}^{2} \leq 1, b_{3} \geq 0,
+\]
+\[
+(1 - t)b_{1}^{2} + (1 - t)b_{2}^{2} + (1 - t)b_{3}^{2} \leq (1 - t), b_{3} \geq 0.
+\]
+Adding the equations together,
+\[
+ta_{1}^{2} + (1 - t)b_{1}^{2} + ta_{2}^{2} + (1 - t)b_{2}^{2} + ta_{3}^{2} + (1 - t)b_{3}^{2} \leq t + (1 - t), a_{3} \geq 0, b_{3} \geq 0.
+\]
+we use the fact that $f(x) = x^{2}$ is convex:
+\[
+(ta_{1} + (1 - t)b_{1})^{2} + (ta_{2} +  (1 - t)b_{2})^{2} + (ta_{3} +  (1 - t)b_{3})^{2} \leq 1, a_{3} \geq 0, b_{3} \geq 0.
+\]
+proving that the upper half of a 3D unit ball is convex.
+
+We also show that the boundary of the upper half of a 3D unit ball is concave using through the composition of concave functions. Suppose $f$ is a concave and non-decreasing function, and $g$ is a concave function. We want to show that $f(g(x))$ is concave:
+\[
+f(g(tx + (1 - t)y)) \geq tf(g(x)) + (1 - t)f(g(y)).
+\]
+Since $f$ is non decreasing and $g$ is concave,
+\[
+f(g(tx + (1 - t)y)) \geq f(tg(x) + (1 - t)g(y))
+\]
+and since $f$ is a concave function:
+\[
+f(tg(x) + (1 - t)g(y)) \geq tf(g(x) + (1 - t)f(g(y))
+\]
+proving that the composition of $f(g(x))$ is concave. We have the following theorem:
+\begin{theorem}
+	\label{theorem:concavecomposition}
+	Let $h(x) = f(g(x))$. The composite function $h$ is concave if $f$ is non-decreasing and concave, and $g$ is concave.
+\end{theorem}
+
+Let $f(\mathbf{x}) = \sqrt{1- x_{1}^{2} - x_{2}^{2}}$ be the equation for the boundary of the upper half of the 3D unit ball. We can decompose $f$ as $g(h(x))$ like this:
+\[
+g(x) = \sqrt{x}
+\]
+which is concave and non-decreasing, and 
+\[
+h(\mathbf{x}) = 1- x_{1}^{2} - x_{2}^{2}
+\]
+which is concave. Using Theorem \ref{theorem:concavecomposition}, the resulting function is also concave. This proves that $f$ is concave.
+
+Using these two examples of unit balls, we can apply similar principles to proofs involving more complex objects like the mathematical apple or lemon (which will be described below).
+
+
+
+
+\section{Apples and Lemons}
+\label{appleslemons}
+
+In many cases, it is quite useful to classify convex objects from non-convex objects and especially to determine the areas of convexity compared to those of non-convexity. Modern artificial intelligence techniques often rely on convex restrictions or less efficient non-convex techniques, neither of which is ideal. \citep{JK2017} Since many objects in the real world are non-convex, we want to be able to determine how convex an object is, which we can use with the indices of (non)convexity. 
+
+In this section, we will compare the convexity of apples and lemons. Although this may appear to be a contrived example, it could have useful applications in AI harvesting technology. Between the two fruits, there are differing areas of concavity and convexity. By assessing the surface of the object, we can determine the type of fruit it is and whether it should be collected at all.
+
+We are not able to work with real lemons or apples (as this is a mathematical paper) but we are able to find representations of these objects in mathematical form. They will serve as a theory that can be applied to the real world.
+
+To start, we define some important terms:
+\begin{definition}
+	A set $C$ is convex if given any two points $x$ and $y$ in $C$, the entire line segment that joins $x$ and $y$ is contained within $C$. 
+\end{definition}
+Definitions below are sourced from Wolfram MathWorld and reworded to help my own understanding. 
+\begin{definition}
+	A lemon is a surface of revolution that consists of less than half of a circular arc rotated about a central axis. We will use the upper half of the lemon for this proof. This equation for the upper volume is
+\[
+z \leq \sqrt{R^{2} - (\sqrt{x^{2} + y^{2}} + r)^{2}}
+\]
+where $R > r$.
+\end{definition}
+\begin{definition}
+	An apple is a surface of revolution that consists of a more than half of a circular arc rotated about a central axis. We will use the upper half of the apple for this proof. This equation for this upper volume is
+\[
+z \leq \sqrt{R^{2} - (\sqrt{x^{2} + y^{2}} - r)^{2}}
+\]
+where $R > r$.
+\end{definition}
+
+The apple and lemon objects appear to be similar from the equation, however, it is the difference between the $+$ and $-$ that causes one fruit to have some convex areas that are not found in the other.
+
+\subsection{Lemon Convexity}
+
+The lemon is a mathematical object defined by a surface of revolution, representing an almost ideal version of the physical fruit. Since the fruit is symmetrical, we will only be working with one half of the lemon and treat the other side as 'stuck in the ground', see Figure \ref{fig:lemon}.
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{upper_lemon}
+		\caption{Upper Lemon}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{full_lemon}
+		\caption{Full Lemon}
+	\end{subfigure}
+	\caption{The upper lemon and full lemon.}
+	\label{fig:lemon}
+\end{figure}
+
+First we will show that the upper half of the lemon
+\[
+L(0) := \{ (x_{1}, x_{2}, x_{3}) \in R^{2}: x_{3} \leq \sqrt{R^{2} - (\sqrt{x_{1}^{2} + x_{2}^{2}} + r)^{2}} \}
+\]
+ (centered at $(0, 0, 0)$) is convex. That is, we need to show that if $\mathbf{x},\mathbf{y} \in L(0)$ then 
+\[
+\mathbf{z} := t\mathbf{x} + (1-t)\mathbf{y} \in L(0)
+\]
+for every $t \in [0, 1]$. Explicitly, this means that we need to show that if 
+\[
+x_{3} \leq \sqrt{R^{2} - (\sqrt{x_{1}^{2} + x_{2}^{2}} + r)^{2}}
+\]
+and
+\[
+y_{3} \leq \sqrt{R^{2} - (\sqrt{y_{1}^{2} + y_{2}^{2}} + r)^{2}},
+\]
+then
+\[
+z_{3} \leq \sqrt{R^{2} - (\sqrt{z_{1}^{2} + z_{2}^{2}} + r)^{2}},
+\]
+where $z_{1} = tx_{1} + (1-t)y_{1}$, $z_{2} = tx_{2} + (1-t)y_{2}$ and $z_{3} = tx_{3} + (1-t)y_{3}$ are the coordinates of $\mathbf{z}=(z_{1}, z_{2}, z_{3})$. Since $\mathbf{x}, \mathbf{y} \in L(0)$ and both sides are positive, we have:
+\[
+x_{3}^{2} +(\sqrt{x_{1}^{2} + x_{2}^{2}} + r)^{2} \leq R^{2},
+\]
+\[
+tx_{3}^{2} + t(\sqrt{x_{1}^{2} + x_{2}^{2}} + r)^{2} \leq tR^{2},
+\]
+\[
+y_{3}^{2} +(\sqrt{y_{1}^{2} + y_{2}^{2}} + r)^{2} \leq R^{2},
+\]
+\[
+(1 - t)y_{3}^{2} + (1 - t)(\sqrt{y_{1}^{2} + y_{2}^{2}} + r)^{2} \leq (1 - t)R^{2},
+\]
+Adding the equations together
+\[
+tx_{3}^{2} + (1 - t)y_{3}^{2} + t(\sqrt{x_{1}^{2} + x_{2}^{2}} + r)^{2} + (1 - t)(\sqrt{y_{1}^{2} + y_{2}^{2}} + r)^{2} \leq tR^{2} + (1 - t)R^{2},
+\]
+we use the fact that $f(x) = x^{2}$ is convex:
+\[
+(tx_{3} + (1 - t)y_{3})^{2} + (t\sqrt{x_{1}^{2} + x_{2}^{2}} + (1 - t)\sqrt{y_{1}^{2} + y_{2}^{2}} + tr + (1 - t)r)^{2} \leq tR^{2} + R^{2} - tR^{2},
+\]
+and that $f(\mathbf{x}) = \sqrt{x_{1}^{2} + x_{2}^{2}}$ is convex:
+\[
+(tx_{3} + (1 - t)y_{3})^{2} + (\sqrt{(tx_{1} + (1 - t)y_{1})^{2} + (tx_{2} + (1  - t)y_{2})^{2}} + r)^{2} \leq R^{2}.
+\]
+This is equivalent to
+\[
+(z_{3})^{2} + (\sqrt{z_{1}^{2} + z_{2}^{2}} + r)^{2} \leq R^{2},
+\]
+which is true because the bounds of $\sqrt{z_{1}^{2} + z_{2}^{2}} + r$ are $[-R+2r, R]$ (from the definition of a lemon). This definitely satisfies the inequality and can be rearranged as follows:
+\[
+z_{3} \leq \sqrt{R^{2} - (\sqrt{z_{1}^{2} + z_{2}^{2}} + r)^{2}}
+\]
+proving that the upper half of the lemon $L(0)$ is convex.
+
+We will apply the indices of convexity and non-convexity to the surface of $L(0)$, or equivalently, 
+\[
+x_{3} = \sqrt{R^{2} - (\sqrt{x_{1}^{2} + x_{2}^{2}} + r)^{2}}. 
+\]
+This will let us determine the 'level' of convexity at different parts of the surface. The $2 \times 2$ Hessian was computed for the function and its positive and negative eigenvalues were plotted in Figure \ref{fig:lemoneigenvalues}. Notice that the plotted values are quite negative, which is a foreshadow to the level of convexity/concavity of the surface. These numbers can be inserted into the formulas for indices of convexity and non-convexity provided by \cite{DMZ2019}. In Figure \ref{fig:lemonnloc}, the index of lack of convexity is plotted and it can be seen that the entire lemon has an index of 1. This indicates that the surface of the top half of a lemon is non-convex. Similarly, in Figure \ref{fig:lemonconv}, the index of convexity has a value of 0 for the entire lemon.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{lemon/lambda1}
+		\caption{Positive}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{lemon/lambda2}
+		\caption{Negative}
+	\end{subfigure}
+	\caption{Eigenvalues of the $2 \times 2$ Hessian, $\lambda_{1}$ and $		\lambda_{2}$}
+	\label{fig:lemoneigenvalues}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[height=5cm]{lemon/nloc}
+	\caption{The normalized index of lack of convexity $\mathrm{NLOC}(f,\mathbf{x}) = \frac{\sum_{i=1}^{d} \lambda_{i}^{-} (\mathbf{x})}{\sum_{i=1}^{d} |\lambda_{i} (\mathbf{x}) |} $}
+	\label{fig:lemonnloc}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[height=5cm]{lemon/nconv}
+	\caption{The index of convexity $\mathrm{CONV}(f,\mathbf{x}) = \frac{\sum_{i=1}^{d} \lambda_{i}^{+} (\mathbf{x})}{\sum_{i=1}^{d} |\lambda_{i} (\mathbf{x}) |}$}
+	\label{fig:lemonconv}
+\end{figure}
+
+As can be seen, the surface of the top half of a lemon is quite clearly non-convex, which is somewhat expected with a visual inspection. This defining property of a lemon can be used when harvesting to pick up the fruit. A further inspection of the volume of the fruit can verify that it is in fact a lemon, not something else, like a tennis ball.
+
+
+\subsection{Apple Non-Convexity}
+
+Similar to a lemon, the apple is a mathematical object defined by a surface of revolution. Some say it is an idealized version of the fruit, other say it looks more like a plum. It is also symmetrical and we will only work with the top half of the fruit because when harvesting, the other half will have fallen into the ground. As seen in Figure \ref{fig:apple}, there is a small 'dent' in the center of the fruit which is what separates it from a lemon. This can be used to differentiate the fruits during harvest.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{upper_apple}
+		\caption{Upper Apple}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{full_apple}
+		\caption{Full Apple}
+	\end{subfigure}
+	\caption{The upper apple and full apple.}
+	\label{fig:apple}
+\end{figure}
+
+We will prove that the upper half of an apple
+\[
+A(0) := \{ (x_{1}, x_{2}, x_{3}) \in R^{2}: x_{3} \leq \sqrt{R^{2} - (\sqrt{x_{1}^{2} + x_{2}^{2}} - r)^{2}} \}
+\]
+is not convex in a similar manner to that of the lemon. If the apple were to be convex, we want to find points $\mathbf{x}$ and $\mathbf{y}$ such that there exist a point $t \in [0,1]$ such that $\mathbf{z} := t\mathbf{x} + (1-t)\mathbf{y} \in A(0)$. Explicitly, this means that we need to show that if 
+\[
+x_{3} \leq \sqrt{R^{2} - (\sqrt{x_{1}^{2} + x_{2}^{2}} - r)^{2}}
+\]
+and
+\[
+y_{3} \leq \sqrt{R^{2} - (\sqrt{y_{1}^{2} + y_{2}^{2}} - r)^{2}},
+\]
+then
+\[
+z_{3} \leq \sqrt{R^{2} - (\sqrt{z_{1}^{2} + z_{2}^{2}} - r)^{2}},
+\]
+where $z_{1} = tx_{1} + (1-t)y_{1}$, $z_{2} = tx_{2} + (1-t)y_{2}$ and $z_{3} = tx_{3} + (1-t)y_{3}$ are the coordinates of $\mathbf{z}=(z_{1}, z_{2}, z_{3})$. Since $\mathbf{x}, \mathbf{y} \in A(0)$ and both sides are positive, we have:
+\[
+x_{3}^{2} +(\sqrt{x_{1}^{2} + x_{2}^{2}} - r)^{2} \leq R^{2},
+\]
+\[
+tx_{3}^{2} + t(\sqrt{x_{1}^{2} + x_{2}^{2}} - r)^{2} \leq tR^{2},
+\]
+\[
+y_{3}^{2} +(\sqrt{y_{1}^{2} + y_{2}^{2}} - r)^{2} \leq R^{2},
+\]
+\[
+(1 - t)y_{3}^{2} + (1 - t)(\sqrt{y_{1}^{2} - y_{2}^{2}} - r)^{2} \leq (1 - t)R^{2},
+\]
+Adding the equations together
+\[
+tx_{3}^{2} + (1 - t)y_{3}^{2} + t(\sqrt{x_{1}^{2} + x_{2}^{2}} - r)^{2} + (1 - t)(\sqrt{y_{1}^{2} + y_{2}^{2}} - r)^{2} \leq tR^{2} + (1 - t)R^{2},
+\]
+we use the fact that $f(x) = x^{2}$ is convex:
+\[
+(tx_{3} + (1 - t)y_{3})^{2} + (t\sqrt{x_{1}^{2} + x_{2}^{2}} + (1 - t)\sqrt{y_{1}^{2} + y_{2}^{2}} - tr - (1 - t)r)^{2} \leq tR^{2} + R^{2} - tR^{2},
+\]
+and that $f(\mathbf{x}) = \sqrt{x_{1}^{2} + x_{2}^{2}}$ is convex:
+\[
+(tx_{3} + (1 - t)y_{3})^{2} + (\sqrt{(tx_{1} + (1 - t)y_{1})^{2} + (tx_{2} + (1  - t)y_{2})^{2}} - r)^{2} \leq R^{2}.
+\]
+This is equivalent to
+\[
+(z_{3})^{2} + (\sqrt{z_{1}^{2} + z_{2}^{2}} - r)^{2} \leq R^{2},
+\]
+which is \textit{not} always true because the bounds of $\sqrt{z_{1}^{2} + z_{2}^{2}} + r$ are $[-R-2r, R]$. The lower bound squared does not satisfy the inequality and proves that the upper half of the apple $A(0)$ is not convex.
+
+We will apply the indices of convexity and non-convexity to the surface of $A(0)$
+\[
+x_{3} = \sqrt{R^{2} - (\sqrt{x_{1}^{2} + x_{2}^{2}} - r)^{2}}.
+\]
+First, the $2 \times 2$ Hessian was computed and its positive and negative eigenvalues were plotted in Figure \ref{fig:appleeigenvalues}. Note that unlike the lemon, there are some extremely positive values in the center of the apple. But otherwise, it is similar to the lemon and this is enough information to plot the normalized index of lack of convexity (Figure \ref{fig:applenloc}) and index of convexity (Figure \ref{fig:appleconv}). The rendered plots are notable in that they have clear dips and spikes, which indicate that the different regions of the graph have different levels of convexity and non-convexity. Earlier, the 'dent' in the apple was mentioned and the properties of that 'dent' are clearly seen here: as a dip in the NLOC and as a spike in CONV. Based on those findings, the 'dent' is an area of convexity that is unlike the other concave areas of the apple. AI harvesting technology can identify these areas and classify this type of object as an 'apple', or 'plum', whichever the operator pleases.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{apple/lambda1}
+		\caption{Positive}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{apple/lambda2}
+		\caption{Negative}
+	\end{subfigure}
+	\caption{Eigenvalues of the $2 \times 2$ Hessian, $\lambda_{1}$ and $\lambda_{2}$}
+	\label{fig:appleeigenvalues}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[height=5cm]{apple/nloc}
+	\caption{The normalized index of lack of convexity $\mathrm{NLOC}(f,\mathbf{x}) = \frac{\sum_{i=1}^{d} \lambda_{i}^{-} (\mathbf{x})}{\sum_{i=1}^{d} |\lambda_{i} (\mathbf{x}) |} $}
+	\label{fig:applenloc}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[height=5cm]{apple/nconv}
+	\caption{The index of convexity $\mathrm{CONV}(f,\mathbf{x}) = \frac{\sum_{i=1}^{d} \lambda_{i}^{+} (\mathbf{x})}{\sum_{i=1}^{d} |\lambda_{i} (\mathbf{x}) |}$}
+	\label{fig:appleconv}
+\end{figure}
+
+Using these properties of the different fruits, it can be made quite clear the distinction between lemons and apples. Indices of convexity/non-convexity show the difference between the lemon with perfect concavity and the apple with a convex dent. This can be applied to future AI harvesting technology as a reliable classifier that does not depend on light or colour. There may even be the possibility of direct analysis of the resulting graph through the Hessian and second-derivative which could allow for automatic determination of the maximums and minimums to separate the fruits. However, in the real-world the fruits are not perfect and thus the resulting graphs would not be as flawless either. A tolerance range is necessary to reconcile the differences and provide a best guess as to the type of fruit that is being harvested.
+
+\section{Discretization}
+\label{discretization}
+
+In the real world, there are (obviously) no such perfect objects like the mathematical apple or mathematical lemon. In fact, the challenge to classify these objects is a little bit bigger because computers can only analyze images and cannot observe 3D models. Perhaps in the future this will become possible, but current constraints (technological and budgetary) limit our choice of input.
+
+Thus, it is necessary to perform a discretization of the models that we have worked on. That is, the same computations are performed but this time using numerical rather than symbolic methods.
+
+The discretization was first conducted on the multivariable function $f(x, y) = \sin(xy)$ that was first analyzed. The results are similar to the lemon and apple below, so for brevity, it is not included in the paper.
+
+Below, in Figure \ref{fig:dupperlemon} is the same lemon as earlier but plotted numerically. To avoid errors with 0 and infinity, the edges near $z = 0$ were not plotted.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[height=5cm]{d_lemon/d_upper_lemon}
+	\caption{The upper lemon, discretized.}
+	\label{fig:dupperlemon}
+\end{figure}
+
+Using a the numerical values and the lemon function, the Hessian was computed and its eigenvalues plotted in Figure \ref{fig:dlemoneigenvalues}. The plotted figure is slightly choppier than the symbolic function.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{d_lemon/lambda1}
+		\caption{Positive}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{d_lemon/lambda2}
+		\caption{Negative}
+	\end{subfigure}
+	\caption{Eigenvalues of the $2 \times 2$ Hessian, $\lambda_{1}$ and $\lambda_{2}$}
+	\label{fig:dlemoneigenvalues}
+\end{figure}
+
+Finally, the indices of convexity and non-convexity were computed and plotted once again in Figure \ref{fig:dlemonlocconv}. In this case, there is nothing particularly special about the surface of the lemon as it is non-convex across its entire upper surface.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{d_lemon/nloc}
+		\caption{$\mathrm{NLOC}(f,\mathbf{x}) = \frac{\sum_{i=1}^{d} \lambda_{i}^{-} (\mathbf{x})}{\sum_{i=1}^{d} |\lambda_{i} (\mathbf{x}) |} $}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{d_lemon/nconv}
+		\caption{$\mathrm{CONV}(f,\mathbf{x}) = \frac{\sum_{i=1}^{d} \lambda_{i}^{+} (\mathbf{x})}{\sum_{i=1}^{d} |\lambda_{i} (\mathbf{x}) |}$}
+	\end{subfigure}
+	\caption{The normalized index of lack of convexity and the normalized index of convexity for the upper half of a lemon.}
+	\label{fig:dlemonlocconv}
+\end{figure}
+
+The apple's discretization was performed in a similar manner in Figure \ref{fig:dupperapple}. Edges were not plotted to avoid errors around 0 and infinity.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[height=5cm]{d_apple/d_upper_apple}
+	\caption{The upper apple, discretized.}
+	\label{fig:dupperapple}
+\end{figure}
+
+Using a the numerical values and the apple function, the Hessian was computed and its eigenvalues plotted in Figure \ref{fig:dappleeigenvalues}. The plotted figure is slightly choppier than the symbolic function, and the edges are missing due to error avoidance bounds.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{d_apple/d_lambda1}
+		\caption{Positive}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{d_apple/d_lambda2}
+		\caption{Negative}
+	\end{subfigure}
+	\caption{Eigenvalues of the $2 \times 2$ Hessian, $\lambda_{1}$ and $\lambda_{2}$}
+	\label{fig:dappleeigenvalues}
+\end{figure}
+
+Finally, the indices of convexity and non-convexity were computed and plotted once again in Figure \ref{fig:dapplelocconv}. The results are similar but differences occur in the centre, where the apple has a convex region.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{d_apple/dloc_apple}
+		\caption{$\mathrm{NLOC}(f,\mathbf{x}) = \frac{\sum_{i=1}^{d} \lambda_{i}^{-} (\mathbf{x})}{\sum_{i=1}^{d} |\lambda_{i} (\mathbf{x}) |} $}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[h!]{0.5\textwidth}
+		\centering
+		\includegraphics[height=5cm]{d_apple/dconv_apple}
+		\caption{$\mathrm{CONV}(f,\mathbf{x}) = \frac{\sum_{i=1}^{d} \lambda_{i}^{+} (\mathbf{x})}{\sum_{i=1}^{d} |\lambda_{i} (\mathbf{x}) |}$}
+	\end{subfigure}
+	\caption{The normalized index of lack of convexity and the normalized index of convexity for the upper half of a apple.}
+	\label{fig:dapplelocconv}
+\end{figure}
+
+The discretization of both objects is crucially useful because of the way images are stored in pixels. AI will need to analyze the cloud of pixels and map it onto a model, and this discretization allows for easier conversion of pixels to mathematical model. Improvements to the current plots could include a lower spacing to achieve more precise graphs, however, this would greater computational resources. A real-world application would have to take such trade-offs into account as well.
+
+
+
+\section{Ruff Work}
+\label{ruff}
+
+Using Theorem X, we know that $f(\mathbf{x}) = R^{2} - (\sqrt{x_{1}^{2} + x_{2}^{2}} - r)^{2}$ is convex because $f$ can be decomposed as $g(h(\mathbf{x}))$ as follows:
+WRONG: G(X) IS CONCAVE!
+\begin{align*}
+	g(x) 
+	&= R^{2} - (x - r)^{2},
+	\\
+	h(\mathbf{x})
+	&= \sqrt{x_{1}^{2} + x_{2}^{2}},
+\end{align*}
+where $g(x)$ is convex and $h(x)$ is convex.
+
+We have 
+\begin{align*}
+	\sqrt{R^{2} - (\sqrt{z_{1}^{2} + z_{2}^{2}} - r)^{2}}
+	&= \sqrt{R^{2} - (\sqrt{(tx_{1} + (1 - t)y_{1})^{2} + (tx_{2} + (1  - t)y_{2})^{2}} - r)^{2}}
+	\\
+	&\leq t(\sqrt{R^{2} - (\sqrt{x_{1}^{2} + x_{2}^{2}} - r)^{2}} ) + (1-t)(\sqrt{R^{2} - (\sqrt{y_{1}^{2} + y_{2}^{2}} - r)^{2}})
+	\\
+	&\leq t(x_{3}) + (1 - t)(y_{3})
+	\\
+	&= z_{3}
+\end{align*}
+however, this is false because $x_{3} = \sqrt{R^{2}-(\sqrt{x_{1}^{2}+x_{2}^{2}} - r)^{2}}$ is actually not convex. To make this easier to verify, we turn the function into a composite function, $f(g(\mathbf{x}))$, where $f(x) = \sqrt{R^{2}-(x - r)^{2}}$ and $g(\mathbf{x}) = \sqrt{x_{1}^{2}+x_{2}^{2}}$.
+\begin{align*}
+	g(\mathbf{x})
+	&= \sqrt{x_{1}^{2}+x_{2}^{2}}
+	\\
+	&= ||\mathbf{x}||
+\end{align*}
+$g(\mathbf{x})$ is norm, which is definitely convex. We take the derivative of $f(x)$:
+\begin{align*}
+	f'(x)
+	&= - \frac{x - r}{\sqrt{R^{2} - (x - r)^{2}}}
+	\\
+	f''(x)
+	&= - \frac{R^{2}}{(R^{2} - (x - r)^{2})^{\frac{3}{2}}}
+\end{align*}
+No matter what $x$ is, the second derivative is not positive, and thus the function is not convex. The function is actually a convex curve, not a convex function.
+
+
+\begin{thebibliography}{}
+
+\bibitem[Davydov, Moldavskaya, and Zitikis(2019)]{DMZ2019}
+	Davydov, Y., Moldavskaya, E., \& Zitikis, R. (2019)
+	Searching for and quantifying nonconvexity regions of functions.
+	\textit{Lithuanian Mathematical Journal}, 59, 4, 507--518
+
+\bibitem[Jain and Kar(2017)]{JK2017}
+	Jain, P., \& Kar, P. (2017).
+	Non-convex optimization for machine learning.
+	\textit{Foundations and Trends in Machine Learning}, 10, 3-4, 142--336
+
+\bibitem[Kelman and Linker(2014)]{KL2014}
+	Kelman, E., \& Linker, R. (2014).
+	Vision-based localisation of mature apples in tree images using convexity.
+	\textit{Biosystems Engineering}, 118, 174--185.
+
+\bibitem[Lukacs(1960)]{L1960}
+	Lukacs, E. (1960). 
+	\textit{Characteristic Functions.} Hafner Publishing Company, New York. 
+
+\end{thebibliography}
+
+
+
+\end{document}
